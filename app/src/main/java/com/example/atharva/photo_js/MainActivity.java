@@ -31,6 +31,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -46,11 +47,13 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
     JavaCameraView javac;
 
-    Mat mgrba,mGray,mCanny,mgrbf,mgrbt;
+    Mat mgrba,mGray,mCanny,mgrbf,mgrbt,mGauss;
 
     Button b1;
 
     ImageView i1;
+
+    TextView t1;
 
     Bitmap bmap, image, pic;
 
@@ -114,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
 
         b1 = findViewById(R.id.b1);
+
+        t1  = findViewById(R.id.t1);
 
         i1 = findViewById(R.id.i1);
 
@@ -257,6 +262,8 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
         mGray = new Mat(height,width, CvType.CV_8UC1);
 
+        mGauss = new Mat(height,width, CvType.CV_8UC1);
+
         mCanny = new Mat(height,width, CvType.CV_8UC1);
 
         /*Core.transpose(mgrba, mgrbt);
@@ -284,24 +291,28 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
 
         if(showPreviews) {
-
-
-
             //Mat tmp = new Mat (height, width, CvType.CV_8U, new Scalar(4));
 
             bmap = Bitmap.createBitmap(javac.getWidth()/4,javac.getHeight()/4, Bitmap.Config.ARGB_8888);
 
 
 
+           Imgproc.cvtColor(mgrba,mGray,Imgproc.COLOR_RGB2GRAY);
 
-
-
-            Imgproc.cvtColor(mgrba,mGray,Imgproc.COLOR_RGB2GRAY);
+         //  Imgproc.GaussianBlur(mGray,mGauss,new Size(3,3),0);
 
             Imgproc.equalizeHist(mGray, mGray);
-            Imgproc.threshold(mGray, mGray, 100, 200, Imgproc.THRESH_OTSU);
+            //Imgproc.threshold(mGray, mGray, 100, 200,Imgproc.THRESH_BINARY);
+
+            Imgproc.threshold(mGray,mGray,100,200,Imgproc.THRESH_OTSU);
+
+
 
             //Imgproc.Canny(mGray,mCanny,10,100);
+
+
+
+
 
             //try {
                 bmap = Bitmap.createBitmap(mGray.cols(), mGray.rows(), Bitmap.Config.ARGB_8888);
@@ -338,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         //TextView OCRTextView = (TextView) findViewById(R.id.OCRTextView);
         //OCRTextView.setText(OCRresult);
 
-        Log.i("code", OCRresult);
+       t1.setText(OCRresult);
         jscode = OCRresult;
         getOutput();
     }
