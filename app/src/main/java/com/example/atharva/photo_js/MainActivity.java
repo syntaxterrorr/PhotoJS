@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
     Mat mgrba,mGray,mCanny,mgrbf,mgrbt,mGauss;
 
-    Button b1;
+    Button button;
 
-    ImageView i1;
+    ImageView image;
 
     TextView t1;
-
+    int count = 0;
     Bitmap bmap, image, pic;
 
     private boolean showPreviews=false;
@@ -73,14 +73,14 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             switch (status){
                 case BaseLoaderCallback.SUCCESS:{
 
-                  b1.setOnClickListener(new View.OnClickListener() {
+                  button.setOnClickListener(new View.OnClickListener() {
 
 
                       @Override
                       public void onClick(View v) {
                           showPreviews = !showPreviews;
                           pic = bmap;
-
+                          count++;
 
                       }
                   });
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                 }
             }
         }
+        System.out.println("The button was clicked: " + counter);
     };
 
 
@@ -116,11 +117,11 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         setContentView(R.layout.activity_main);
 
 
-        b1 = findViewById(R.id.b1);
+        button = findViewById(R.id.b1);
 
         t1  = findViewById(R.id.t1);
 
-        i1 = findViewById(R.id.i1);
+        image = findViewById(R.id.i1);
 
         javac = findViewById(R.id.javac);
 
